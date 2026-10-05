@@ -1,0 +1,47 @@
+    1  getent passwd user1
+    2  getent passwd 1234
+    3  getent group studets
+    4  sudo groupadd students
+    5  sudo useradd -m -u 1234 -G students user1
+    6  sudo passwd user1
+    7  sudo chage -M 90 user1
+    8  id user1
+    9  sudo chage -l user1
+   10  sudo find / type f -perm -4000 -printf '%#m %u %p\n' 2>/dev/null | tee ~/suid_files.out
+   11  ps -eo pid,ruid,euid,user,euser,comm | awk 'NR==1 || ($2>=1000 && $2<=60000 && $3==0)'
+   12  ps -eo pid,ruid,euid,user,euser,comm | awk 'NR==1 || ($2>=1000 && $2<=60000 && $3==0)' | tee ~/privileged_processes.out
+   13  sudo -u user1 cat /etc/shadow
+   14  sudo cp /usr/bin/cat /home/user1/cat-suid
+   15  sudo chown root:root /home/user1/cat-suid
+   16  sudo chmod 4755 /home/user1/cat-suid
+   17  ls -l /home/user1/cat-suid
+   18  sudo -u user1 /home/user1/cat-suid /etc/shadow | head -n 3
+   19  sudo ls -l /home/user1/cat-suid
+   20  sudo -u user1 touch /home/user1/testfile
+   21  sudo -u user1 chown root:root /home/user1/testfile
+   22  sudo cp /usr/bin/chown /home/user1/chown-cap
+   23  sudo chown root:root /home/user1/chown-cap
+   24  sudo chmod 755 /home/user1/chown-cap
+   25  sudo setcap cap_chown=ep /home/user1/chown-cap
+   26  sudo getcap /home/user1/chown-cap
+   27  sudo -u user1 /home/user1/chown-cap root:root /home/user1/testfile
+   28  sudo ls -l /home/user1/testfile
+   29  command -v date
+   30  echo 'user1 ALL=(root) /usr/bin/date' | sudo tee /etc/sudoers.d/user1-time
+   31  sudo chmod 440 /etc/sudoers.d/user1-time
+   32  sudo visudo -cf /etc/sudoers.d/user1-time
+   33  sudo -u user1 sudo -l
+   34  sudo -u user1 sudo /usr/bin/date
+   35  sudo -u user1 sudo /usr/bin/date -s '+1 minute'
+   36  date
+   37  stat /home/user1 > ~/stat.out
+   38  sudo stat /home/user1/cat-suid >> ~/stat.out
+   39  sudo stat /home/user1/chown-cap >> ~/stat.out
+   40  cat ~/stat.out
+   41  sudo getcap /home/user1/chown-cap > ~/getcap.out
+   42  cat ~/getcap.out
+   43  clear
+   44  echo M265307
+   45  clear
+   46  echo M265307
+   47  history > ~/history.out
